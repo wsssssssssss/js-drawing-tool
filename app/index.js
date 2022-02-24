@@ -15,6 +15,9 @@ let painting = false;
 let rectPainting = false;
 let rect = undefined;
 
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
 const removeEvent = _ => {
     // 선그리는 이벤트 제거
     canvas.removeEventListener('mousedown', lineMouseDownHandle);
@@ -33,18 +36,10 @@ const lineMouseDownHandle = _ => {
     painting = true;
 };
 
-const rectMouseDownHandle = e => {
-    rectPainting = true;
-    rect = document.createElement('div');
-    root.appendChild(rect);
-    rectInfo.startX = e.offsetX;
-    rectInfo.startY = e.offsetY;
-};
-
 const lineMouseMoveHandle = e => {
     const x = e.offsetX;
     const y = e.offsetY;
-
+    
     ctx.lineWidth = 5;
     if(painting) {
         ctx.lineTo(x, y);
@@ -55,14 +50,29 @@ const lineMouseMoveHandle = e => {
     }
 };
 
+const lineMouseUpHandle = _ => {
+    if(painting) {
+        painting = false;
+    }
+};
+
+
+
+const rectMouseDownHandle = e => {
+    rectPainting = true;
+    rect = document.createElement('div');
+    root.appendChild(rect);
+    rectInfo.startX = e.offsetX;
+    rectInfo.startY = e.offsetY;
+};
+
 const rectMouseMoveHandle = e => {
     if(rectPainting) {
-        const canvasRect = canvas.getBoundingClientRect();
         const x = e.offsetX;
         const y = e.offsetY;
 
-        const left = x - rectInfo.startX < 0 ? canvasRect.left + rectInfo.startX + (x - rectInfo.startX) : canvasRect.left + rectInfo.startX;
-        const top = y - rectInfo.startY < 0 ? canvasRect.top + rectInfo.startY + (y - rectInfo.startY) : canvasRect.top + rectInfo.startY ;
+        const left = x - rectInfo.startX < 0 ? rectInfo.startX + (x - rectInfo.startX) : rectInfo.startX;
+        const top = y - rectInfo.startY < 0 ? rectInfo.startY + (y - rectInfo.startY) : rectInfo.startY ;
         const width = x - rectInfo.startX < 0 ? (x - rectInfo.startX)*-1 : x - rectInfo.startX;
         const height = y - rectInfo.startY < 0 ? (y - rectInfo.startY)*-1 : y - rectInfo.startY;
         
@@ -77,20 +87,13 @@ const rectMouseMoveHandle = e => {
     };
 };
 
-const lineMouseUpHandle = _ => {
-    if(painting) {
-        painting = false;
-    }
-};
-
 const rectMouseUpHandle = _ => {
     if(rectPainting) {
         rectPainting = false;
-    
-        const canvasRect = canvas.getBoundingClientRect();
+
         const rectRect = rect.getBoundingClientRect();
     
-        ctx.fillRect(rectRect.left - canvasRect.left, rectRect.top - canvasRect.top, rectRect.width, rectRect.height);
+        ctx.fillRect(rectRect.left, rectRect.top, rectRect.width, rectRect.height);
         rect.remove();
         rect = undefined;
     }
