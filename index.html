@@ -1,19 +1,43 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Drawing Tool"
-    />
-    <link rel="stylesheet" href="./css/style.css">
-    <title>Drawing Tool</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <script src="app/index.js"></script>
-  </body>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Drawing Tool" />
+  <link rel="stylesheet" href="./css/style.css">
+  <title>Drawing Tool</title>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root" class="flex">
+    <canvas class="canvas"></canvas>
+
+    <div class="tools flex">
+      <input type="file" accept=".jpg, .png" class="add_img_btn none">
+      <div class="pencil tool">
+        <img src="./img/연필.png" alt="">
+      </div>
+      <div class="earser tool">
+        <img src="./img/지우개.png" alt="">
+      </div>
+      <div class="rect tool">
+        <img src="./img/사각형.png" alt="">
+      </div>
+      <div class="add_img tool">
+        <img src="./img/이미지.png" alt="">
+      </div>
+      <div class="color">
+        <input type="color" value="#000000">
+      </div>
+      <div class="save">
+        <input type="button" value="저장하기">
+      </div>
+    </div>
+  </div>
+  <script src="app/index.js"></script>
+</body>
+
 </html>
