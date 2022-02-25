@@ -5,6 +5,8 @@ const canvas = document.querySelector("#root .canvas");
 const ctx = canvas.getContext('2d');
 const tools = document.querySelector("#root .tools");
 const addImgBtn = document.querySelector("#root .tools .add_img_btn");
+const colorBtn = document.querySelector("#root .tools .color input");
+const saveBtn = document.querySelector("#root .tools .save input");
 
 const rectInfo = {
     startX: 0,
@@ -15,11 +17,9 @@ let painting = false;
 let rectPainting = false;
 let rect = undefined;
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
 
 const removeEvent = _ => {
-    // 선그리는 이벤트 제거
+    // 선그리는 이벤트 제거 + (지우개)
     canvas.removeEventListener('mousedown', lineMouseDownHandle);
     canvas.removeEventListener('mousemove', lineMouseMoveHandle);
     window.removeEventListener('mouseup', lineMouseUpHandle);
@@ -30,6 +30,10 @@ const removeEvent = _ => {
     canvas.removeEventListener('mousemove', rectMouseMoveHandle);
     window.removeEventListener('mouseup', rectMouseUpHandle);
     window.removeEventListener('blur', rectMouseUpHandle);
+
+    ctx.globalCompositeOperation = 'source-over';
+    canvas.style.cursor = 'default';
+    ctx.fillStyle = "#000000";
 };
 
 const lineMouseDownHandle = _ => {
@@ -39,9 +43,9 @@ const lineMouseDownHandle = _ => {
 const lineMouseMoveHandle = e => {
     const x = e.offsetX;
     const y = e.offsetY;
-    
+
     ctx.lineWidth = 5;
-    if(painting) {
+    if (painting) {
         ctx.lineTo(x, y);
         ctx.stroke();
     } else {
@@ -51,11 +55,10 @@ const lineMouseMoveHandle = e => {
 };
 
 const lineMouseUpHandle = _ => {
-    if(painting) {
+    if (painting) {
         painting = false;
     }
 };
-
 
 
 const rectMouseDownHandle = e => {
@@ -67,15 +70,15 @@ const rectMouseDownHandle = e => {
 };
 
 const rectMouseMoveHandle = e => {
-    if(rectPainting) {
+    if (rectPainting) {
         const x = e.offsetX;
         const y = e.offsetY;
 
         const left = x - rectInfo.startX < 0 ? rectInfo.startX + (x - rectInfo.startX) : rectInfo.startX;
-        const top = y - rectInfo.startY < 0 ? rectInfo.startY + (y - rectInfo.startY) : rectInfo.startY ;
-        const width = x - rectInfo.startX < 0 ? (x - rectInfo.startX)*-1 : x - rectInfo.startX;
-        const height = y - rectInfo.startY < 0 ? (y - rectInfo.startY)*-1 : y - rectInfo.startY;
-        
+        const top = y - rectInfo.startY < 0 ? rectInfo.startY + (y - rectInfo.startY) : rectInfo.startY;
+        const width = x - rectInfo.startX < 0 ? (x - rectInfo.startX) * -1 : x - rectInfo.startX;
+        const height = y - rectInfo.startY < 0 ? (y - rectInfo.startY) * -1 : y - rectInfo.startY;
+
         Object.assign(rect.style, {
             position: 'fixed',
             left: left + 'px',
@@ -88,15 +91,21 @@ const rectMouseMoveHandle = e => {
 };
 
 const rectMouseUpHandle = _ => {
-    if(rectPainting) {
+    if (rectPainting) {
         rectPainting = false;
 
         const rectRect = rect.getBoundingClientRect();
-    
+
         ctx.fillRect(rectRect.left, rectRect.top, rectRect.width, rectRect.height);
         rect.remove();
         rect = undefined;
     }
+};
+
+
+const colorChangeHandle = e => {
+    ctx.fillStyle = e.target.value;
+    ctx.strokeStyle = e.target.value;
 };
 
 
@@ -119,9 +128,18 @@ const addImgHandle = async e => {
     };
 };
 
+const canvasSaveHandle = e => {
+    const imgURL = canvas.toDataURL("image/jpeg");
+    const aTag = document.createElement('a');
+
+    aTag.href = imgURL;
+    aTag.download = 'img';
+    aTag.click();
+};
 
 const toolsClickHandle = e => {
     const target = e.target.parentElement;
+
     if (target.classList.contains('tool')) {
         [...tools.children].forEach(ele => ele.style.background = 'none');
         removeEvent();
@@ -135,16 +153,17 @@ const toolsClickHandle = e => {
                 window.addEventListener('mouseup', lineMouseUpHandle);
                 window.addEventListener('blur', lineMouseUpHandle);
                 break
-                
+
             case 'earser':
-                // ctx.globalCompositeOperation = 'xor';
-                // canvas.addEventListener('mousedown', );
-                // canvas.addEventListener('mousemove', );
-                // window.addEventListener('mouseup', );
-                // window.addEventListener('blur', );
+                ctx.globalCompositeOperation = 'destination-out';
+                canvas.addEventListener('mousedown', lineMouseDownHandle);
+                canvas.addEventListener('mousemove', lineMouseMoveHandle);
+                window.addEventListener('mouseup', lineMouseUpHandle);
+                window.addEventListener('blur', lineMouseUpHandle);
                 break
-            
+
             case 'rect':
+                canvas.style.cursor = 'crosshair';
                 canvas.addEventListener('mousedown', rectMouseDownHandle);
                 canvas.addEventListener('mousemove', rectMouseMoveHandle);
                 window.addEventListener('mouseup', rectMouseUpHandle);
@@ -158,9 +177,24 @@ const toolsClickHandle = e => {
             default:
                 break
         };
+
+        return false;
     };
 };
 
+const init = _ => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-tools.addEventListener('click', toolsClickHandle);
-addImgBtn.addEventListener('change', addImgHandle);
+    tools.addEventListener('click', toolsClickHandle);
+    addImgBtn.addEventListener('change', addImgHandle);
+    colorBtn.addEventListener('change', colorChangeHandle);
+    saveBtn.addEventListener('click', canvasSaveHandle);
+
+    document.querySelector("#root .tools .pencil img").click();
+};
+
+
+window.addEventListener('load', init);
