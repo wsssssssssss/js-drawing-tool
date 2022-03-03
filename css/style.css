@@ -3,7 +3,8 @@ body{overflow: hidden;}
 
 .flex{display: flex;}
 
-input[type="raido"]{display: none;}
+input[type="radio"],
+input[type="file"]{display: none;}
 #root{position: relative;}
 #canvas{background: #fff;}
 
