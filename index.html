@@ -8,12 +8,26 @@
       name="description"
       content="Drawing Tool"
     />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="./css/style.css">
     <title>Drawing Tool</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root">
+      <input type="radio" name="tool" id="pen" checked>
+      <input type="radio" name="tool" id="eraser">
+      <input type="radio" name="tool" id="rect">
+      <input type="radio" name="tool" id="img">
+      <input type="file" id="img">
+      <div class="tools flex">
+        <label for="pen"><i class='bx bxs-pencil'></i></label>
+        <label for="eraser"><i class='bx bxs-eraser'></i></label>
+        <label for="rect"><i class='bx bxs-rectangle'></i></label>
+        <label for="img"><i class='bx bxs-image-add'></i></label>
+        <input type="color" id="color">
+    </div>
+      <canvas id="canvas" ></canvas>
+    </div>
     <script src="app/index.js"></script>
   </body>
 </html>

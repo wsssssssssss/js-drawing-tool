@@ -1,0 +1,16 @@
+*{margin: 0; padding: 0; box-sizing: border-box;}
+body{overflow: hidden;}
+
+.flex{display: flex;}
+
+input[type="raido"]{display: none;}
+#root{position: relative;}
+#canvas{background: #fff;}
+
+#pen:checked~.tools label[for="pen"],
+#eraser:checked~.tools label[for="eraser"],
+#rect:checked~.tools label[for="rect"],
+#img:checked~.tools label[for="img"]{background: #999;}
+
+.tools{position: absolute; top: 10%; left: 95%; flex-direction: column; gap: 1rem;}
+.tools i{font-size: 3rem;}
