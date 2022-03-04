@@ -15,12 +15,12 @@ const mouseDownListener = (e) => {
     ctx.beginPath();
     ctx.strokeStyle = $("#color").value;
     if(tool === "rect"){
+       
         canvasCopy.classList.remove("none");
         ctxCopy.beginPath();
         ctxCopy.strokeStyle = $("#color").value;
         drawRectX = e.clientX;
         drawRectY = e.clientY;   
-        console.log(drawRectX);
         return;
     }
     ctx.moveTo(e.clientX, e.clientY);
@@ -35,6 +35,7 @@ const mouseMoveListener = (e) => {
             ctx.strokeStyle = "#fff";
         };
         if(tool === "rect"){
+           
             ctxCopy.clearRect(0, 0,window.innerWidth, window.innerHeight);
             ctxCopy.fillRect(drawRectX, drawRectY, e.clientX - drawRectX, e.clientY - drawRectY);
             return;
@@ -52,16 +53,42 @@ const mouseUpListener = (e) => {
     drwaChk = false;            
 };
 
+const readFile = (e) => {
+    let file = e.target.files;
+    console.log(file);
+    const img = new Image();
+  
+    let reader = new FileReader();
+    reader.onload = (e) => {
+        let img = new Image();
+        img.onload = () => {
+            ctx.drawImage(img, 0, 0);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file[0]);
+};
 
-document.addEventListener("mousedown", e => mouseDownListener(e));
-document.addEventListener("mouseup", e => mouseUpListener(e));
-document.addEventListener("mousemove", e => mouseMoveListener(e));
+const fileDownload = (e) => {
+    let dataURL = canvas.toDataURL("image/png");
+    console.log(123123);
+    $("a").download = 'from_canvas.png';
+    $("a").href = dataURL;
+    $("a").click();
+
+};
+
+document.addEventListener("mousedown", mouseDownListener);
+document.addEventListener("mouseup", mouseUpListener);
+document.addEventListener("mousemove", mouseMoveListener);
 
 
 $("#pen").addEventListener("click", _=> tool = "pen");
 $("#eraser").addEventListener("click", _=> tool = "eraser");
 $("#rect").addEventListener("click", _=>  tool ="rect");
-        
+$("#img").addEventListener("change", readFile); 
+$(".bx-download").addEventListener("click", fileDownload);
+
 const rander = (canvas, ctx) =>  {
     canvas.width = window.innerWidth; 
     canvas.height = window.innerHeight; 
