@@ -1,0 +1,27 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: inherit;
+}
+html,
+body,
+#root {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+nav {
+    text-align: center;
+    height: 10vh;
+}
+nav > div {
+    display: inline-block;
+    width: 200px;
+    line-height: 5vh;
+    text-align: center;
+    margin-top: 5vh;
+}
+nav > div:hover {
+    background: #ccc;
+}
