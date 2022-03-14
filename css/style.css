@@ -1,0 +1,20 @@
+*{margin: 0; padding: 0; box-sizing: border-box;}
+a{text-align: none; color: #000;}
+body{overflow: hidden;}
+
+.flex{display: flex;}
+
+input[type="radio"],
+input[type="file"]{display: none;}
+#root{position: relative;}
+#canvas{background: #fff;}
+#canvasCopy{background: rgba(255, 255, 255, 0);  position: fixed; z-index: 99; top: 0; left: 0;}
+#pen:checked~.tools label[for="pen"],
+#eraser:checked~.tools label[for="eraser"],
+#rect:checked~.tools label[for="rect"],
+#img:checked~.tools label[for="img"]{background: #999;}
+
+.tools{position: absolute; top: 10%; left: 95%; z-index: 100; flex-direction: column; gap: 1rem; padding: 1rem; background: #999;}
+.tools i{font-size: 3rem;}
+
+.none{display: none;}
