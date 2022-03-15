@@ -11,6 +11,9 @@ body,
     height: 100vh;
     overflow: hidden;
 }
+.none {
+    display: none;
+}
 nav {
     text-align: center;
     height: 10vh;
@@ -24,4 +27,14 @@ nav > div {
 }
 nav > div:hover {
     background: #ccc;
+}
+.selectColor {
+    position: relative;
+}
+.color {
+    position: absolute;
+    top: 5vh;
+    left: 0;
+    width: 200px;
+    height: 5vh;
 }

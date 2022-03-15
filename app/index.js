@@ -7,10 +7,10 @@ const addImg = nav.querySelector(".addImg");
 const selectPen = nav.querySelector(".selectPen")
 const eraser = nav.querySelector(".eraser");
 const addSquare = nav.querySelector(".addSquare");
-const selectColor = nav.querySelector(".selectColor");
+const selectColor = nav.querySelector(".selectColor > div");
 const save = nav.querySelector(".save");
 const root = document.querySelector("#root");
-
+const color = document.querySelector('input[type="color"]');
 const canvasOffsetX = canvas.offsetLeft;
 const canvasOffsetY = canvas.offsetTop;
 
@@ -18,11 +18,13 @@ canvas.width = window.innerWidth - canvasOffsetX;
 canvas.height = window.innerHeight - canvasOffsetY;
 
 let drawing = false;
+let erase;
 let tool = "selectPen";
 
-ctx.lineWidth = 5;
+ctx.lineWidth = 50;
 ctx.lineCap = "round";
-ctx.strokeStyle = "black";
+ctx.lineJoin = "round";
+ctx.strokeStyle = color.value;
 
 nav.addEventListener('click', e => {
     if (e.target.className === 'addImg') {
@@ -33,18 +35,25 @@ nav.addEventListener('click', e => {
         tool = "eraser";
     } else if (e.target.className === 'addSquare') {
         tool = "addSquare";
-    } else if (e.target.className === 'selectColor') {
-        tool = "selecColor";
+    } else if (e.target === selectColor || e.target === color) {
+        tool = "selectColor";
+        color.classList.remove("none");
     } else {
         tool = "save";
     }
-})
-
+});
 canvas.addEventListener("mousedown", e => {
     const x = e.offsetX;
     const y = e.offsetY;
     if (tool === "selectPen") {
-        drawing = true
+        drawing = true;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+    } else if (tool === "selectColor") {
+        ctx.strokeStyle = color.value;
+    } else if (tool === "eraser") {
+        erase = true;
+        ctx.globalCompositeOperation = 'destination-out';
         ctx.beginPath();
         ctx.moveTo(x, y);
     }
@@ -52,20 +61,28 @@ canvas.addEventListener("mousedown", e => {
 canvas.addEventListener("mousemove", e => {
     const x = e.offsetX;
     const y = e.offsetY;
-    if (!drawing) return;
-    ctx.lineTo(x, y);
-    ctx.stroke();
+    if (!drawing) {
+        return;
+    } else {
+        ctx.lineTo(x, y);
+        ctx.stroke();
+    }
+    if(!erase) {
+        return;
+    } else {
+        ctx.lineTo(x, y);
+        ctx.stroke();
+    }
 });
 root.addEventListener("mouseup", () => {
-    drawing = false
+    if (tool === "selectPen") {
+        drawing = false;
+    } else if (tool === "eraser") {
+        erase = false;
+    }
 });
-
-
-// let mouseX;
-// let mouseY;
-// function onMouseMove(e) {
-//     mouseX = parseInt(e.clientX-offsetX);
-//     mouseY = parseInt(e.clientY-offsetY);
-
-//     if
-// }
+root.addEventListener('click', e => {
+    if(e.target != selectColor && e.target != color) {
+        color.classList.add("none");
+    }
+});
