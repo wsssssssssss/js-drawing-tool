@@ -1,148 +1,92 @@
 console.log('hello world');
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
-
-const nav = document.querySelector("nav");
-const addImg = nav.querySelector(".addImg");
-const selectPen = nav.querySelector(".selectPen")
-const eraser = nav.querySelector(".eraser");
-const addSquare = nav.querySelector(".addSquare");
-const selectColor = nav.querySelector(".selectColor > label");
-const save = nav.querySelector(".save");
-const root = document.querySelector("#root");
-const color = document.querySelector('input[type="color"]');
+const nav = document.querySelector('nav');
+const addImg = nav.querySelector('.addImg');
+const selectPen = nav.querySelector('.selectPen');
+const eraser = nav.querySelector('.eraser');
+const addSquare = nav.querySelector('.addSquare');
+const selectColor = nav.querySelector('.selectColor > label');
+const save = nav.querySelector('.save');
+const root = document.querySelector('#root');
+const color = document.querySelector('input[type="color"');
 const image = document.querySelector('input[type="file"');
 const canvasOffsetX = canvas.offsetLeft;
 const canvasOffsetY = canvas.offsetTop;
-const $ = canvas.addEventListener;
 
 canvas.width = window.innerWidth - canvasOffsetX;
 canvas.height = window.innerHeight - canvasOffsetY;
-
-let drawing = false;
-let erase;
-let tool = "selectPen";
-let squareTool = false;
-
-// let square = {
-//     startX: 0,
-//     startY: 0,
-//     x: 0,
-//     y: 0
-// };
-// let squares = [];
+ctx.lineWidth = 50;
+ctx.lineCap = 'round';
+ctx.lineJoin = 'round';
+ctx.strokeStyle = color.value;
 let startX, startY, x, y;
 
-// let img = new Image();
-// image.addEventListener('change', function () {
-//     console.log(image.value);
-//     img.src = image.value;
-//     ctx.drawImage(img, 0, 0);
-// });
-
-ctx.lineWidth = 50;
-ctx.lineCap = "round";
-ctx.lineJoin = "round";
-ctx.strokeStyle = color.value;
+let drawing = false;
+let tool = "selectPen";
 
 const navClickHendler = e => {
-    if (e.target.className === 'addImg') {
-        return;
-    }
     if (e.target.className === 'selectPen') {
-        tool = "selectPen";
+        tool = 'selectPen';
         ctx.globalCompositeOperation = 'source-over';
         return;
     }
     if (e.target.className === 'eraser') {
-        tool = "eraser";
+        tool = 'eraser';
         ctx.globalCompositeOperation = 'destination-out';
         return;
     }
     if (e.target.className === 'addSquare') {
-        tool = "addSquare";
-        return;
-    }
-    if (e.target.className === 'save') {
+        tool = 'addSquare';
         return;
     }
 }
+
 const canvasMousedownHendler = e => {
-    const x = e.offsetX;
-    const y = e.offsetY;
+    x = e.offsetX;
+    y = e.offsetY;
     startX = x;
     startY = y;
-    // square.startX = x;
-    // square.startY = y;
-    if (tool === "selectPen") {
-        drawing = true;
+    drawing = true;
+    if (tool === 'selectPen' || tool === 'eraser') {
         ctx.strokeStyle = color.value;
         ctx.beginPath();
         ctx.moveTo(x, y);
         return;
     }
-    if (tool === "eraser") {
-        drawing = true;
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        return;
-    }
-    if (tool === 'addSquare') {
-        squareTool = true;
-        return;
-    }
 }
-const canvasPenToolMousemoveHendler = e => {
-    const x = e.offsetX;
-    const y = e.offsetY;
-    if (!drawing) {
-        return;
-    } else {
-        ctx.lineTo(x, y);
-        ctx.stroke();
-    }
-}
-const canvasSquareToolMousemoveHendler = e => {
+const canvasMousemoveHendler = e => {
     x = e.offsetX;
     y = e.offsetY;
-    if (!squareTool) {
-        return;
-    } else {
-        // square.x = e.offsetX;
-        // square.y = e.offsetY;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // for(let i = 0; i < squares.length; i++) {
-        //     ctx.fillRect(squares[i].square.startX, squares[i].square.startY, squares[i].square.x - square.startX, squares[i].square.y - square.startY);
-        // }
-        ctx.fillStyle = color.value;
-        ctx.fillRect(startX, startY, x - startX, y - startY);
-        // ctx.fillRect(startX, startY, square.x - startX, square.y - startY);
+    if (tool === 'selectPen' || tool === 'eraser') {
+        if (!drawing) {
+            return;
+        } else {
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+    }
+    if (tool === 'addSquare') {
+        if (!drawing) {
+            return;
+        } else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = color.value;
+            ctx.fillRect(startX, startY, x - startX, y - startY);
+        }
     }
 }
 const canvasMouseupHendler = () => {
     drawing = false;
-    squareTool = false;
-    // squares.push(square);
-    // square = {
-    //     x: 0,
-    //     y: 0,
-    //     startX: 0,
-    //     startY: 0
-    // };
 }
-const canvasMouseoutHendler = () => {
-    drawing = false;
-    squareTool = false;
-}
-// const saveImg = ele => {
-//     let image = canvas.toDataURL('image/jpg');
-//     ele.href = image;
-// }
 
-// save.addEventListener('click', saveImg(ele));
 nav.addEventListener('click', navClickHendler);
-$("mousedown", canvasMousedownHendler);
-$("mousemove", canvasPenToolMousemoveHendler);
-$("mousemove", canvasSquareToolMousemoveHendler);
-$("mouseup", canvasMouseupHendler);
-$('mouseout', canvasMouseoutHendler)
+canvas.addEventListener('mousedown', canvasMousedownHendler);
+canvas.addEventListener('mousemove', canvasMousemoveHendler);
+canvas.addEventListener('mouseup', canvasMouseupHendler);
+
+/*
+js canvas shapes painting
+canvas add image
+canvas save image to file
+*/
