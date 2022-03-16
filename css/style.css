@@ -17,6 +17,7 @@ body,
 nav {
     text-align: center;
     height: 10vh;
+    background: #eee;
 }
 nav > div {
     display: inline-block;
@@ -24,17 +25,18 @@ nav > div {
     line-height: 5vh;
     text-align: center;
     margin-top: 5vh;
+    font-weight: bold;
 }
 nav > div:hover {
     background: #ccc;
 }
-.selectColor {
-    position: relative;
+.selectedTool {
+    background: #aaa;
 }
-.color {
-    position: absolute;
-    top: 5vh;
-    left: 0;
-    width: 200px;
-    height: 5vh;
+.selectColor > label {
+    display: block;
+}
+#color {
+    width: 100px;
+    transform: translateY(10%);
 }
