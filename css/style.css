@@ -1,0 +1,53 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: inherit;
+}
+html,
+body,
+#root {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+.none {
+    display: none;
+}
+nav {
+    text-align: center;
+    height: 10vh;
+    background: #eee;
+}
+nav > div {
+    display: inline-block;
+    width: 200px;
+    line-height: 5vh;
+    text-align: center;
+    margin-top: 5vh;
+    font-weight: bold;
+}
+nav > div:hover {
+    background: #ccc;
+}
+.selectedTool {
+    background: #aaa;
+}
+.selectColor > label {
+    display: block;
+}
+#color {
+    width: 100px;
+    transform: translateY(10%);
+}
+input[type=file] {
+    display: none;
+}
+.addImg {
+    display: inline-block;
+    width: 200px;
+    line-height: 5vh;
+    text-align: center;
+    margin-top: 5vh;
+    font-weight: bold;
+}
