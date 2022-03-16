@@ -40,3 +40,14 @@ nav > div:hover {
     width: 100px;
     transform: translateY(10%);
 }
+input[type=file] {
+    display: none;
+}
+.addImg {
+    display: inline-block;
+    width: 200px;
+    line-height: 5vh;
+    text-align: center;
+    margin-top: 5vh;
+    font-weight: bold;
+}

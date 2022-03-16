@@ -13,9 +13,9 @@
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root">
-    <input type="file" id="addImg">
+    <input type="file" accept="image/*" id="addImg">
     <nav>
-      <div class="addImg">이미지 추가</div>
+      <label for="addImg" class="addImg">이미지 추가</label>
       <div class="selectPen">펜으로 그리기</div>
       <div class="eraser">지우개로 지우기</div>
       <div class="addSquare">사각형 추가하기</div>
@@ -23,8 +23,7 @@
         <label for="color">색상 선택하기</label>
       </div>
       <input type="color" value="#000000" name="userColor" id="color">
-      <!-- <div class="save">저장하기</div> -->
-      <label for="addImg" class="save">저장하기</label>
+      <div class="save">저장하기</div>
     </nav>
     <canvas></canvas>
   </div>

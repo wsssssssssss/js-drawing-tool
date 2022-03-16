@@ -11,6 +11,7 @@ const selectColor = nav.querySelector(".selectColor > label");
 const save = nav.querySelector(".save");
 const root = document.querySelector("#root");
 const color = document.querySelector('input[type="color"]');
+const image = document.querySelector('input[type="file"');
 const canvasOffsetX = canvas.offsetLeft;
 const canvasOffsetY = canvas.offsetTop;
 const $ = canvas.addEventListener;
@@ -31,8 +32,13 @@ let squareTool = false;
 // };
 // let squares = [];
 let startX, startY, x, y;
-let img = new Image();
-img.src = '';
+
+// let img = new Image();
+// image.addEventListener('change', function () {
+//     console.log(image.value);
+//     img.src = image.value;
+//     ctx.drawImage(img, 0, 0);
+// });
 
 ctx.lineWidth = 50;
 ctx.lineCap = "round";
@@ -41,7 +47,6 @@ ctx.strokeStyle = color.value;
 
 const navClickHendler = e => {
     if (e.target.className === 'addImg') {
-        console.log('이미지 추가');
         return;
     }
     if (e.target.className === 'selectPen') {
@@ -59,7 +64,6 @@ const navClickHendler = e => {
         return;
     }
     if (e.target.className === 'save') {
-        tool = "save";
         return;
     }
 }
@@ -130,7 +134,12 @@ const canvasMouseoutHendler = () => {
     drawing = false;
     squareTool = false;
 }
+// const saveImg = ele => {
+//     let image = canvas.toDataURL('image/jpg');
+//     ele.href = image;
+// }
 
+// save.addEventListener('click', saveImg(ele));
 nav.addEventListener('click', navClickHendler);
 $("mousedown", canvasMousedownHendler);
 $("mousemove", canvasPenToolMousemoveHendler);
